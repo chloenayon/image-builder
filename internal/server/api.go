@@ -107,9 +107,9 @@ type HTTPErrorList struct {
 
 // ImageRequest defines model for ImageRequest.
 type ImageRequest struct {
-	Architecture   string          `json:"architecture"`
-	ImageType      string          `json:"image_type"`
-	UploadRequests []UploadRequest `json:"upload_requests"`
+	Architecture  string        `json:"architecture"`
+	ImageType     string        `json:"image_type"`
+	UploadRequest UploadRequest `json:"upload_request"`
 }
 
 // ImageStatus defines model for ImageStatus.
@@ -371,7 +371,7 @@ func RegisterHandlers(router EchoRouter, si ServerInterface) {
 var swaggerSpec = []string{
 
 	"H4sIAAAAAAAC/8xZ6W4bORJ+FYK7QGaAviQ7jiNgsOPNeDNeBEkQe7M/YsOgmiU1J91kh2Rb0Rh69wWP",
-	"bvWlw5ME2F+WxWLVVwfr0iNORVEKDlwrPHvEKs2gIPbjxX+v/1PmgtAP8KUCpd+Vmgluj0opSpCagbuT",
+	"bvWlIxMH2F+WxWLVVwfr0iNORVEKDlwrPHvEKs2gIPbjxX+v/1PmgtAP8KUCpd+Vmgluj0opSpCagbuT",
 	"EQn3K6aze5KmovKs4Cspyhzw7BOeTE9On5+9OH+ZTKb4LsBMQ2Fp9LoEPMNKS8aXeBPUXxApyRpvNgGW",
 	"8KViEqhhMyborrkj5n9Aqg2TC5lmTEOqKwlXGoohZCLTrIMRfz0/uz87xcEQEivIEu7N1/Zqg31790sq",
 	"VtOxq3u1sRi67A8p0wXwdwkLPMN/i7cujL3/4oEJBmgCfPFnJeE4F0tQopIp3C+lqErzDQWVSmbp8Qy/",
@@ -381,33 +381,33 @@ var swaggerSpec = []string{
 	"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",
-	"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",
+	"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",
 }
 
 // GetSwagger returns the Swagger specification corresponding to the generated code

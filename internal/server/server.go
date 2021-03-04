@@ -204,7 +204,7 @@ func (h *Handlers) ComposeImage(ctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Exactly one image request should be included")
 	}
 
-	if len(composeRequest.ImageRequests[0].UploadRequests) != 1 {
+	if (composeRequest.ImageRequests[0].UploadRequest == UploadRequest{}) {
 		return echo.NewHTTPError(http.StatusBadRequest, "Exactly one upload request should be included")
 	}
 
@@ -213,7 +213,7 @@ func (h *Handlers) ComposeImage(ctx echo.Context) error {
 		return err
 	}
 
-	uploadReq, err := h.server.buildUploadRequest(composeRequest.ImageRequests[0].UploadRequests[0])
+	uploadReq, err := h.server.buildUploadRequest(composeRequest.ImageRequests[0].UploadRequest)
 	if err != nil {
 		return err
 	}
@@ -228,12 +228,10 @@ func (h *Handlers) ComposeImage(ctx echo.Context) error {
 		Customizations: custom,
 		ImageRequests: []cloudapi.ImageRequest{
 			{
-				Architecture: composeRequest.ImageRequests[0].Architecture,
-				ImageType:    composeRequest.ImageRequests[0].ImageType,
-				Repositories: repositories,
-				UploadRequests: []cloudapi.UploadRequest{
-					uploadReq,
-				},
+				Architecture:  composeRequest.ImageRequests[0].Architecture,
+				ImageType:     composeRequest.ImageRequests[0].ImageType,
+				Repositories:  repositories,
+				UploadRequest: uploadReq,
 			},
 		},
 	}

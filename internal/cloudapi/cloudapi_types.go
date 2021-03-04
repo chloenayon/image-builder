@@ -25,6 +25,12 @@ type AWSUploadRequestOptionsS3 struct {
 	SecretAccessKey string `json:"secret_access_key"`
 }
 
+// AWSUploadStatus defines model for AWSUploadStatus.
+type AWSUploadStatus struct {
+	Ami    string `json:"ami"`
+	Region string `json:"region"`
+}
+
 // AzureUploadRequestOptions defines model for AzureUploadRequestOptions.
 type AzureUploadRequestOptions struct {
 
@@ -106,12 +112,18 @@ type GCPUploadRequestOptions struct {
 	ShareWithAccounts *[]string `json:"share_with_accounts,omitempty"`
 }
 
+// GCPUploadStatus defines model for GCPUploadStatus.
+type GCPUploadStatus struct {
+	ImageName string `json:"image_name"`
+	ProjectId string `json:"project_id"`
+}
+
 // ImageRequest defines model for ImageRequest.
 type ImageRequest struct {
-	Architecture   string          `json:"architecture"`
-	ImageType      string          `json:"image_type"`
-	Repositories   []Repository    `json:"repositories"`
-	UploadRequests []UploadRequest `json:"upload_requests"`
+	Architecture  string        `json:"architecture"`
+	ImageType     string        `json:"image_type"`
+	Repositories  []Repository  `json:"repositories"`
+	UploadRequest UploadRequest `json:"upload_request"`
 }
 
 // ImageStatus defines model for ImageStatus.
@@ -145,8 +157,9 @@ type UploadRequest struct {
 
 // UploadStatus defines model for UploadStatus.
 type UploadStatus struct {
-	Status string      `json:"status"`
-	Type   UploadTypes `json:"type"`
+	Options interface{} `json:"options"`
+	Status  string      `json:"status"`
+	Type    UploadTypes `json:"type"`
 }
 
 // UploadTypes defines model for UploadTypes.

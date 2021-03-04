@@ -105,7 +105,7 @@ func RunTestWithClient(t *testing.T, ib string) {
 					server.ImageRequest{
 						Architecture: arch,
 						ImageType:    c.imageType,
-						UploadRequests: []server.UploadRequest{
+						UploadRequest: []server.UploadRequest{
 							c.uploadRequest,
 						},
 					},

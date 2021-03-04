@@ -110,20 +110,34 @@ components:
       required:
         - status
         - type
+        - options
       properties:
         status:
           type: string
           enum: ['success', 'failure', 'pending', 'running']
         type:
           $ref: '#/components/schemas/UploadTypes'
+        options:
+          oneOf:
+            - $ref: '#/components/schemas/AWSUploadStatus'
+            - $ref: '#/components/schemas/GCPUploadStatus'
     AWSUploadStatus:
       type: object
+      required:
+        - ami
+        - region
       properties:
-        ami_id:
+        ami:
           type: string
           example: 'ami-0c830793775595d4b'
+        region:
+          type: string
+          example: 'eu-west-1'
     GCPUploadStatus:
       type: object
+      required:
+        - project_id
+        - image_name
       properties:
         project_id:
           type: string
@@ -151,7 +165,7 @@ components:
         - architecture
         - image_type
         - repositories
-        - upload_requests
+        - upload_request
       properties:
         architecture:
           type: string
@@ -163,10 +177,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Repository'
-        upload_requests:
-          type: array
-          items:
-            $ref: '#/components/schemas/UploadRequest'
+        upload_request:
+          $ref: '#/components/schemas/UploadRequest'
     Repository:
       type: object
       required:
