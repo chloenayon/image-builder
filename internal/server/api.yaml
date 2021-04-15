@@ -8,10 +8,6 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 
-servers:
-  - url: "/api/image-builder/v1"
-  - url: "/api/image-builder/v1.0"
-
 paths:
   /version:
     get:
@@ -276,6 +272,9 @@ components:
             - $ref: '#/components/schemas/AWSUploadStatus'
             - $ref: '#/components/schemas/GCPUploadStatus'
             - $ref: '#/components/schemas/AzureUploadStatus'
+    UploadTypes:
+      type: string
+      enum: ['aws', 'gcp', 'azure']
     AWSUploadStatus:
       type: object
       required:
@@ -382,21 +381,43 @@ components:
         id:
           type: string
     UploadRequest:
+      oneOf:
+        - $ref: '#/components/schemas/AWSUploadRequestOptions'
+        - $ref: '#/components/schemas/GCPUploadRequestOptions'
+        - $ref: '#/components/schemas/AzureUploadRequestOptions'
+    AWSUploadRequest:
       type: object
       required:
         - type
         - options
       properties:
         type:
-          $ref: '#/components/schemas/UploadTypes'
+          type: string
+          enum: ['aws']
         options:
-          anyOf:
-            - $ref: '#/components/schemas/AWSUploadRequestOptions'
-            - $ref: '#/components/schemas/GCPUploadRequestOptions'
-            - $ref: '#/components/schemas/AzureUploadRequestOptions'
-    UploadTypes:
-      type: string
-      enum: ['aws', 'gcp', 'azure']
+          $ref: '#/components/schemas/AWSUploadRequestOptions'
+    GCPUploadRequest:
+      type: object
+      required:
+        - type
+        - options
+      properties:
+        type:
+          type: string
+          enum: ['gcp']
+        options: 
+          $ref: '#/components/schemas/GCPUploadRequestOptions'
+    AzureUploadRequest:
+      type: object
+      required: 
+        - type
+        - options
+      properties:
+        type:
+          type: string
+          enum: ['azure']
+        options:
+          $ref: '#/components/schemas/AzureUploadRequestOptions'
     AWSUploadRequestOptions:
       type: object
       required:
@@ -490,6 +511,7 @@ components:
           example: 'subscription.rhsm.redhat.com'
         base-url:
           type: string
+          format: url
           example: http://cdn.redhat.com/
         insights:
           type: boolean

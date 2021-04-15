@@ -2,7 +2,6 @@
 package server
 
 import (
-	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -610,7 +609,7 @@ func (s *Server) ValidateRequest(nextHandler echo.HandlerFunc) echo.HandlerFunc 
 			Route:      route,
 		}
 
-		context := context.TODO()
+		context := request.Context()
 		if err := openapi3filter.ValidateRequest(context, requestValidationInput); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, err)
 		}
